@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
@@ -12,7 +12,7 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#9e4333";
+static const char col_cyan[]        = "#cc3300";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -20,7 +20,8 @@ static const char *colors[][3]      = {
 };
 
 static const char *const autostart[] = {
-	"sh", "-c", "dwmblocks", NULL,
+	"sh", "-c", "dwmblocks;", NULL,
+	"sh", "-c", "xfce4-clipman;", NULL,
 	NULL /* terminate */
 };
 
@@ -43,18 +44,15 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
-#include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
- 	{ "[@]",      spiral },
- 	{ "[\\]",      dwindle },
 };
 
 /* key definitions */
@@ -79,10 +77,8 @@ static Key keys[] = {
 	{ MODKEY,             		    XK_Return,    spawn,          {.v = termcmd } },
 	{ MODKEY,             		    XK_m,         spawn,          SHCMD("thunderbird") },
 	{ MODKEY|ShiftMask,    		    XK_p,         spawn,          SHCMD("zathura") },
-	{ MODKEY,             		    XK_r,         spawn,          SHCMD("st -e ranger") },
-	{ MODKEY|ShiftMask,             XK_b, 	      spawn,          SHCMD("dwmblocks") },
+	{ MODKEY,             		    XK_r,         spawn,          SHCMD("xfce4-terminal -e ranger") },
 	{ MODKEY,             		    XK_w, 	      spawn,          SHCMD("firefox") },
-	{ MODKEY|ShiftMask,   		    XK_w, 	      spawn,          SHCMD("firefox --private-window") },
 	{ MODKEY|ShiftMask,             XK_Right,     spawn,          SHCMD("pactl set-sink-volume 0 +10%; pkill -RTMIN+11 dwmblocks") },
 	{ MODKEY|ShiftMask,             XK_Left,      spawn,          SHCMD("pactl set-sink-volume 0 -10%; pkill -RTMIN+11 dwmblocks") },
 	{ MODKEY|ShiftMask,             XK_Up,        spawn,          SHCMD("xbacklight -inc 4.99; pkill -RTMIN+10 dwmblocks") },
@@ -102,7 +98,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,         killclient,     {0} },
 	{ MODKEY,                       XK_t,         setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,         setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_f,         setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,     setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,     togglefloating, {0} },
 	{ MODKEY,                       XK_0,         view,           {.ui = ~0 } },
