@@ -88,6 +88,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Up,        spawn,          SHCMD("xbacklight -inc 4.99; pkill -RTMIN+10 dwmblocks") },
 	{ MODKEY|ShiftMask,             XK_Down,      spawn,          SHCMD("xbacklight -dec 4.99; pkill -RTMIN+10 dwmblocks") },
 	{ MODKEY|ShiftMask,		        XK_k,         spawn,          SHCMD("/home/diego/.scripts/kb_change; pkill -RTMIN+12 dwmblocks") },
+	{ MODKEY|ShiftMask,		        XK_t,         spawn,          SHCMD("mousepad /home/diego/Documents/Zaragoza/TFM/TODO.md") },
 	{ MODKEY|ShiftMask,        		XK_BackSpace, spawn,          SHCMD("shutdown now") },
 	{ MODKEY|ShiftMask,     		XK_s,	      spawn,          SHCMD("systemctl suspend") },
 	{ MODKEY,                       XK_b,         togglebar,      {0} },

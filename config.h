@@ -1,22 +1,20 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Source Code Pro:pixelsize=16:antialias=true:autohint=true" , 
-					                    "Fontawesome:pixelsize=16:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Source Code Pro:pixelsize=16:antialias=true:autohint=true";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#cc3300";
+static const char *fonts[]          = { "FontAwesome:pixelsize=18:antialias=true:autohint=true",
+                                        "Source Code Pro Regular:pixelsize=20:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Source Code Pro:pixelsize=20:antialias=true:autohint=true";
+static const char col_font[]        = "#e6e6e6";
+static const char col_dark[]        = "#141414";
+static const char col_light[]       = "#3b3b3b";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan },
+	[SchemeNorm] = { col_font, col_dark, col_dark },
+	[SchemeSel]  = { col_font, col_light,  col_light },
 };
 
 static const char *const autostart[] = {
@@ -33,14 +31,16 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",         NULL,       NULL,       0,            1,           -1 },
-	{ "Skype",        NULL,       NULL,       0,            1,           -1 },
-	{ "feh",          NULL,       NULL,       0,            1,           -1 },
-	{ "viewnior",     NULL,       NULL,       0,            1,           -1 },
-	{ "Thunar",       NULL,       NULL,       0,            1,           -1 },
-	{ "Pavucontrol",  NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",      NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      instance    title       tags mask     iscentered    isfloating   monitor */
+	{ "Skype",        NULL,   NULL,       0,            1,            1,           -1 },
+	{ "feh",          NULL,   NULL,       0,            1,            1,           -1 },
+	{ "Viewnior",     NULL,   NULL,       0,            1,            1,           -1 },
+	{ "Thunar",       NULL,   NULL,       0,            1,            1,           -1 },
+	{ "Mousepad",     NULL,   NULL,       0,            1,            1,           -1 },
+	{ "Signal",       NULL,   NULL,       0,            1,            1,           -1 },
+	{ "Pavucontrol",  NULL,   NULL,       0,            1,            1,           -1 },
+	{ "Firefox",      NULL,   NULL,       1 << 8,       0,            0,           -1 },
+	{ "kitty",        NULL,   NULL,       0,            1,            1,           -1 },
 };
 
 /* layout(s) */
@@ -68,7 +68,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_dark, "-nf", col_font, "-sb", col_light, "-sf", col_font, NULL };
 static const char *termcmd[]  = { "xfce4-terminal", NULL };
 
 static Key keys[] = {
@@ -77,13 +77,16 @@ static Key keys[] = {
 	{ MODKEY,             		    XK_Return,    spawn,          {.v = termcmd } },
 	{ MODKEY,             		    XK_m,         spawn,          SHCMD("thunderbird") },
 	{ MODKEY|ShiftMask,    		    XK_p,         spawn,          SHCMD("zathura") },
-	{ MODKEY,             		    XK_r,         spawn,          SHCMD("xfce4-terminal -e ranger") },
 	{ MODKEY,             		    XK_w, 	      spawn,          SHCMD("firefox") },
 	{ MODKEY|ShiftMask,             XK_Right,     spawn,          SHCMD("pactl set-sink-volume 0 +10%; pkill -RTMIN+11 dwmblocks") },
 	{ MODKEY|ShiftMask,             XK_Left,      spawn,          SHCMD("pactl set-sink-volume 0 -10%; pkill -RTMIN+11 dwmblocks") },
+	{ MODKEY|ShiftMask,             XK_m,         spawn,          SHCMD("pactl set-sink-mute 0 toggle; pkill -RTMIN+11 dwmblocks") },
 	{ MODKEY|ShiftMask,             XK_Up,        spawn,          SHCMD("xbacklight -inc 4.99; pkill -RTMIN+10 dwmblocks") },
 	{ MODKEY|ShiftMask,             XK_Down,      spawn,          SHCMD("xbacklight -dec 4.99; pkill -RTMIN+10 dwmblocks") },
 	{ MODKEY|ShiftMask,		        XK_k,         spawn,          SHCMD("/home/diego/.scripts/kb_change; pkill -RTMIN+12 dwmblocks") },
+	{ MODKEY,		                XK_t,         spawn,          SHCMD("/home/diego/.scripts/TASKS/loader.sh") },
+	{ MODKEY,       		        XK_a,         spawn,          SHCMD("kitty -e /home/diego/.scripts/TASKS/add_task.sh") },
+	{ MODKEY,             		    XK_r,         spawn,          SHCMD("kitty -e /home/diego/.scripts/TASKS/rm_task.sh") },
 	{ MODKEY|ShiftMask,        		XK_BackSpace, spawn,          SHCMD("shutdown now") },
 	{ MODKEY|ShiftMask,     		XK_s,	      spawn,          SHCMD("systemctl suspend") },
 	{ MODKEY,                       XK_b,         togglebar,      {0} },
@@ -96,7 +99,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return,    zoom,           {0} },
 	{ MODKEY,                       XK_Tab,       view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,         killclient,     {0} },
-	{ MODKEY,                       XK_t,         setlayout,      {.v = &layouts[0]} },
+	//{ MODKEY,                       XK_t,         setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,         setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,     setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,     togglefloating, {0} },
